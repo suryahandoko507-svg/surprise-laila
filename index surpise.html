@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Surprise Ulang Tahun</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{--sky:#dcecfb;--sky2:#b9d6f2;--ink:#1f3a63;--card:#f7fbff;--line:#7ea6d8;--btn:#eaf3fd;--pink:#e58aa8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--sky:#1b2b45;--sky2:#243a5c;--ink:#e6f0ff;--card:#223552;--line:#5f86bd;--btn:#2b4468}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{font-family:'Nunito',system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--sky),var(--sky2));overflow:hidden}
+.screen{position:absolute;inset:0;padding:env(safe-area-inset-top,0px) 16px 16px;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;overflow-y:auto}
+.screen.on{display:flex}
+h1{font-family:'Caveat',cursive;font-size:2.2rem;margin:0;text-align:center}
+.win{width:100%;max-width:340px;background:var(--card);border:2px solid var(--line);border-radius:10px;box-shadow:3px 3px 0 var(--line)}
+.win .bar{height:20px;border-bottom:2px solid var(--line);display:flex;justify-content:flex-end;gap:4px;padding:3px 6px}
+.win .bar i{width:11px;height:11px;border:2px solid var(--line);border-radius:2px}
+.win p{margin:0;padding:12px;font-weight:800;text-align:center}
+.cam{width:100%;max-width:340px;background:var(--card);border:2px solid var(--line);border-radius:18px;padding:12px;display:flex;gap:12px;align-items:center}
+.shot{flex:1;aspect-ratio:4/3;border-radius:8px;border:3px solid var(--line);background:linear-gradient(135deg,#f6c9d8,#b9d6f2);display:grid;place-items:center;font-size:2.6rem;overflow:hidden}
+.shot img,.ph img{width:100%;height:100%;object-fit:cover}
+.lens{width:46px;height:46px;border-radius:50%;background:radial-gradient(circle,#27466f 30%,var(--line) 32%);flex:none}
+.dots{display:flex;gap:10px}
+.dots span{width:46px;height:52px;border:2px solid var(--line);border-radius:10px;background:var(--btn);display:grid;place-items:center;font-size:1.5rem}
+.pad{display:grid;grid-template-columns:repeat(3,64px);gap:9px}
+.pad button,.nav button,.close{font:inherit;font-weight:800;font-size:1.15rem;height:46px;border:2px solid var(--line);border-radius:12px;background:var(--btn);color:var(--ink);cursor:pointer}
+.pad button:active,.nav button:active{transform:scale(.94)}
+.pad .ok{background:var(--line);color:#fff}
+.shake{animation:sh .35s}
+@keyframes sh{20%{transform:translateX(-9px)}60%{transform:translateX(9px)}}
+.msg{min-height:1.2em;font-weight:800;color:var(--pink)}
+.grid{display:flex;gap:6px;width:100%;max-width:420px;justify-content:center}
+.gift{flex:1;background:none;border:0;padding:0;cursor:pointer;color:var(--ink);font:inherit;font-weight:800;animation:bob 2.6s ease-in-out infinite}
+.gift:nth-child(2){animation-delay:.4s}.gift:nth-child(3){animation-delay:.8s}
+.gift svg{width:100%;height:auto;display:block}
+@keyframes bob{50%{transform:translateY(-8px)}}
+.modal{position:fixed;inset:0;background:rgba(15,30,55,.55);display:none;align-items:center;justify-content:center;padding:20px 14px;z-index:5}
+.modal.on{display:flex}
+.sheet{width:100%;max-width:380px;max-height:100%;overflow:auto;background:var(--card);border:2px solid var(--line);border-radius:14px;box-shadow:4px 4px 0 var(--line);animation:pop .25s}
+@keyframes pop{from{transform:scale(.85);opacity:0}}
+.sheet .bar{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:2px solid var(--line);font-weight:800}
+.close{height:30px;width:34px;font-size:1rem}
+.body{padding:14px;text-align:center}
+.ph{aspect-ratio:4/5;border-radius:10px;border:3px solid var(--line);display:grid;place-items:center;font-size:4rem;overflow:hidden;margin-bottom:8px}
+.nav{display:flex;gap:10px;align-items:center;justify-content:center;margin-top:10px}
+.nav button{width:52px}
+.slide{min-height:210px;display:flex;flex-direction:column;justify-content:center;gap:8px;border-radius:10px;padding:18px;background:linear-gradient(160deg,var(--btn),var(--sky2))}
+.slide b{font-family:'Caveat',cursive;font-size:2rem;font-weight:600}
+.vinyl{width:150px;height:150px;border-radius:50%;margin:6px auto 14px;background:radial-gradient(circle,var(--pink) 18%,#1f2b3f 20%,#34496b 60%,#1f2b3f 62%);border:3px solid var(--line)}
+.vinyl.spin{animation:rot 3s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+.play{width:100%;max-width:200px}
+.fine{font-size:.8rem;opacity:.7;margin:0}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+
+<!-- LAYAR 1: KUNCI -->
+<section class="screen on" id="lock">
+  <h1 id="lockTitle"></h1>
+  <div class="win"><div class="bar"><i></i><i></i></div><p id="greet"></p></div>
+  <div class="cam"><div class="lens"></div><div class="shot" id="camShot"></div></div>
+  <div class="dots" id="dots"></div>
+  <div class="msg" id="msg"></div>
+  <div class="pad" id="pad"></div>
+</section>
+
+<!-- LAYAR 2: KADO -->
+<section class="screen" id="gifts">
+  <div class="win"><div class="bar"><i></i><i></i></div><p>Ketuk kado untuk membukanya ♡</p></div>
+  <div class="grid" id="giftGrid"></div>
+</section>
+
+<!-- MODAL -->
+<div class="modal" id="modal"><div class="sheet">
+  <div class="bar"><span id="mTitle"></span><button class="close" id="mClose" aria-label="Tutup">✕</button></div>
+  <div class="body" id="mBody"></div>
+</div></div>
+
+<script>
+/* ==========================================================
+   CONFIG: HANYA BAGIAN INI yang diedit tiap pesanan baru.
+   Untuk foto/lagu asli: taruh file di folder yang sama,
+   lalu tulis namanya, misal src:"foto1.jpg"
+   ========================================================== */
+const CONFIG = {
+  pin: "1234",
+  lockTitle: "Unlock your little surprise",
+  greeting: "Happy Birthday, Rina ♡",
+  cameraPhoto: "",               // foto kecil di layar kamera
+  gifts: [
+    { type: "photos", label: "Kenangan", title: "Foto kita" },
+    { type: "slides", label: "Ucapan",   title: "Untukmu" },
+    { type: "music",  label: "Lagu",     title: "Lagu favoritmu" }
+  ],
+  photos: [
+    { src: "", emoji: "🌅", caption: "Sunset pertama kita" },
+    { src: "", emoji: "🍜", caption: "Makan malam random" },
+    { src: "", emoji: "🎡", caption: "Hari paling seru" }
+  ],
+  slides: [
+    { h: "Selamat ulang tahun!", t: "Satu tahun lagi, satu cerita lagi bareng kamu." },
+    { h: "Terima kasih", t: "Sudah sabar, sudah lucu, dan selalu ada." },
+    { h: "Doaku", t: "Semoga sehat, bahagia, dan semua mimpimu tercapai ♡" }
+  ],
+  music: { title: "Lagu spesial", src: "" }   // kosong = melodi demo
+};
+
+/* ---------- Utilitas ---------- */
+const $ = id => document.getElementById(id);
+const show = id => { document.querySelectorAll('.screen').forEach(s => s.classList.toggle('on', s.id === id)); };
+const imgOr = (src, emoji) => src ? `<img src="${src}" alt="">` : emoji;
+
+/* ---------- Layar 1: kunci ---------- */
+$('lockTitle').textContent = CONFIG.lockTitle;
+$('greet').textContent = CONFIG.greeting;
+$('camShot').innerHTML = imgOr(CONFIG.cameraPhoto, "💑");
+
+let entered = "";
+const len = CONFIG.pin.length;
+$('dots').innerHTML = "<span></span>".repeat(len);
+
+function renderDots(){
+  [...$('dots').children].forEach((d,i) => d.textContent = i < entered.length ? "•" : "");
+}
+function press(k){
+  $('msg').textContent = "";
+  if (k === "del") entered = entered.slice(0,-1);
+  else if (k === "ok") return check();
+  else if (entered.length < len) entered += k;
+  renderDots();
+  if (entered.length === len) setTimeout(check, 150);
+}
+function check(){
+  if (entered === CONFIG.pin){ show('gifts'); }
+  else {
+    $('msg').textContent = "Sandi salah, coba lagi ya";
+    $('dots').classList.add('shake');
+    setTimeout(() => $('dots').classList.remove('shake'), 400);
+    entered = ""; renderDots();
+  }
+}
+["1","2","3","4","5","6","7","8","9","del","0","ok"].forEach(k => {
+  const b = document.createElement('button');
+  b.textContent = k === "del" ? "⌫" : k === "ok" ? "✓" : k;
+  if (k === "ok") b.className = "ok";
+  b.onclick = () => press(k);
+  $('pad').appendChild(b);
+});
+
+/* ---------- Layar 2: kado ---------- */
+const giftSVG = `<svg viewBox="0 0 120 130" aria-hidden="true">
+  <path d="M60 52C40 20 8 28 22 50c8 10 28 6 38 2zM60 52C80 20 112 28 98 50c-8 10-28 6-38 2z" fill="#9dbfe8" stroke="#5f86bd" stroke-width="3"/>
+  <rect x="14" y="52" width="92" height="22" rx="4" fill="#eaf3fd" stroke="#5f86bd" stroke-width="3"/>
+  <rect x="20" y="74" width="80" height="48" rx="4" fill="#fbf6e8" stroke="#5f86bd" stroke-width="3"/>
+  <rect x="52" y="52" width="16" height="70" fill="#9dbfe8" stroke="#5f86bd" stroke-width="3"/>
+  <circle cx="60" cy="52" r="8" fill="#5f86bd"/></svg>`;
+CONFIG.gifts.forEach((g,i) => {
+  const b = document.createElement('button');
+  b.className = "gift";
+  b.innerHTML = giftSVG + g.label;
+  b.onclick = () => openGift(g);
+  $('giftGrid').appendChild(b);
+});
+
+/* ---------- Modal ---------- */
+let stopMusic = () => {};
+function closeModal(){ stopMusic(); stopMusic = () => {}; $('modal').classList.remove('on'); }
+$('mClose').onclick = closeModal;
+$('modal').onclick = e => { if (e.target.id === 'modal') closeModal(); };
+
+function openGift(g){
+  $('mTitle').textContent = g.title;
+  $('mBody').innerHTML = "";
+  ({photos: photosView, slides: slidesView, music: musicView})[g.type]($('mBody'));
+  $('modal').classList.add('on');
+}
+
+/* Carousel generik: dipakai foto dan ucapan */
+function carousel(box, items, render){
+  let i = 0;
+  const draw = () => {
+    box.innerHTML = `<div id="cv">${render(items[i])}</div>
+      <div class="nav"><button id="pv">‹</button><span>${i+1} / ${items.length}</span><button id="nx">›</button></div>`;
+    $('pv').onclick = () => { i = (i - 1 + items.length) % items.length; draw(); };
+    $('nx').onclick = () => { i = (i + 1) % items.length; draw(); };
+  };
+  draw();
+}
+function photosView(box){
+  carousel(box, CONFIG.photos, p =>
+    `<div class="ph" style="background:linear-gradient(135deg,#f6c9d8,#b9d6f2)">${imgOr(p.src,p.emoji)}</div><b>${p.caption}</b>`);
+}
+function slidesView(box){
+  carousel(box, CONFIG.slides, s => `<div class="slide"><b>${s.h}</b><span>${s.t}</span></div>`);
+}
+
+/* Musik: pakai file jika ada, kalau kosong mainkan melodi demo */
+function musicView(box){
+  box.innerHTML = `<div class="vinyl" id="vn"></div><b>${CONFIG.music.title}</b><br><br>
+    <button class="play pad-btn" id="pl" style="font:inherit;font-weight:800;height:46px;border:2px solid var(--line);border-radius:12px;background:var(--btn);color:var(--ink);width:100%;max-width:200px">▶ Putar</button>`;
+  let playing = false, audio = null, ctx = null, timer = null;
+  const notes = [262,262,294,262,349,330, 262,262,294,262,392,349];
+  const demoStart = () => {
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    let n = 0;
+    const tick = () => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = "sine"; o.frequency.value = notes[n % notes.length];
+      g.gain.setValueAtTime(.2, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + .45);
+      o.connect(g); g.connect(ctx.destination); o.start(); o.stop(ctx.currentTime + .5);
+      n++; timer = setTimeout(tick, 520);
+    };
+    tick();
+  };
+  const stop = () => {
+    playing = false; $('vn') && $('vn').classList.remove('spin');
+    if ($('pl')) $('pl').textContent = "▶ Putar";
+    if (audio) audio.pause();
+    clearTimeout(timer); if (ctx) { ctx.close(); ctx = null; }
+  };
+  stopMusic = stop;
+  $('pl').onclick = () => {
+    if (playing) return stop();
+    playing = true; $('vn').classList.add('spin'); $('pl').textContent = "⏸ Jeda";
+    if (CONFIG.music.src){ audio = audio || new Audio(CONFIG.music.src); audio.play(); }
+    else demoStart();
+  };
+}
+</script>
+</body>
+</html>
