@@ -104,6 +104,16 @@ video{width:100%;border-radius:10px;background:#000}
 #final .paper{margin-top:0}
 .fx{position:fixed;top:-30px;z-index:7;pointer-events:none;animation:fall linear forwards}
 @keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+/* KUCING */
+#cat1{display:none;width:min(60vw,240px);height:auto;filter:drop-shadow(0 0 14px rgba(255,61,129,.55));animation:popIn .8s cubic-bezier(.2,1.5,.4,1),wig 2.6s ease-in-out .8s infinite}
+@keyframes popIn{from{transform:scale(0) rotate(-20deg);opacity:0}}
+@keyframes wig{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg) translateY(-6px)}}
+#final{justify-content:flex-start;padding-top:calc(env(safe-area-inset-top,0px) + 50px);padding-bottom:50vh}
+#cat2{position:fixed;bottom:0;left:0;right:0;margin:auto;height:46vh;width:auto;max-width:90vw;object-fit:contain;z-index:3;mix-blend-mode:multiply;animation:up 1.2s cubic-bezier(.2,1.3,.4,1) backwards,bob2 3.2s ease-in-out 1.2s infinite}
+@keyframes up{from{transform:translateY(105%) rotate(-6deg)}}
+@keyframes bob2{50%{transform:translateY(-10px) rotate(1.5deg)}}
+.sp{position:fixed;z-index:4;pointer-events:none;animation:tw 1.8s ease-in-out infinite;color:#fff;text-shadow:0 0 8px #e8789f}
+@keyframes tw{0%,100%{transform:scale(.2) rotate(0);opacity:0}50%{transform:scale(1.2) rotate(40deg);opacity:1}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 </style>
 </head>
@@ -124,6 +134,7 @@ video{width:100%;border-radius:10px;background:#000}
   <div class="px" id="count"></div>
   <button id="big" aria-label="Buka"></button>
   <div class="px" id="pix"></div>
+  <img id="cat1" src="kucing1.png" alt="" onerror="this.remove()">
   <button class="px" id="goOn">ketuk untuk lanjut ›</button>
 </section>
 
@@ -168,7 +179,7 @@ const CFG = {
   song: { src: "lagu.mp3", title: "Masa Ini, Nanti, dan Masa Indah Lainnya", artist: "Nuca", cover: "cover.png" },
   card: [
     "alloooo saaaayaangggg, Selamat bertambah usia sayangku, cintaa ku, cantikk ku, dan duniaa kuu.",
-    "waduhh kamu sudah 23 tahun sajaa tapi kamu nya masih kecil hehe, semangatt teruss yaa sayangkuu, semogaa kedepanya urusan kamuu selalu di permudahh, apaa yangg kamuu inginin semogaa terwujudd selaluu, tetapp selaluu jadi lailaa yangg banyak orang kenal, tetep jadii lailaa yang baikk hatii imutt, rajin manabung, tidak sombongg, dann tidakk suka melawann orang tuaa.",
+    "waduhh sudah 23 tahun sajaa tapi kamu kecil hehe, semangatt teruss yaa sayangkuu, semogaa kedepanya urusan kamuu selalu di permudahh, apaa yangg kamuu inginin semogaa terwujudd selaluu, tetapp selaluu jadi lailaa yangg banyak orang kenal, tetep jadii lailaa yang baikk hatii imutt, rajin manabung, tidak sombongg, dann tidakk suka melawann orang tuaa.",
     "oiyaaa semoggaaa impiann kamuuu semuanyaa terwujudd dann abgg bakal selaluu support kamuu teruss kapann punn dimanaa punn sayangg.",
     "sekali lagii happy birthday yaa sayanggggkuuu i wish u the bestt sayangg, I LOVE YOUU ❤️"
   ],
@@ -248,7 +259,7 @@ $('big').onclick = e => {
   let i = 0; const txt = CFG.bigText;
   const ty = setInterval(() => {
     $('pix').textContent = txt.slice(0, ++i);
-    if (i >= txt.length) { clearInterval(ty); $('goOn').style.display = "block"; }
+    if (i >= txt.length) { clearInterval(ty); const c = $('cat1'); if (c) c.style.display = "block"; setTimeout(() => $('goOn').style.display = "block", 1400); }
   }, 110);
 };
 $('goOn').onclick = () => {
@@ -333,8 +344,17 @@ function initPuzzle(){
   }
   paint();
 }
+function showCat2(){
+  const c = document.createElement('img'); c.id = "cat2"; c.src = "kucing2.jpg"; c.alt = "";
+  c.onerror = () => c.remove(); document.body.appendChild(c);
+  for (let i = 0; i < 12; i++){
+    const e = document.createElement('span'); e.className = "sp"; e.textContent = i % 3 ? "✨" : "♥";
+    e.style.cssText = `left:${rnd(5,88)}%;top:${rnd(45,92)}%;font-size:${rnd(14,28)}px;animation-delay:${rnd(0,2)}s;animation-duration:${rnd(1.4,2.6)}s${i%3?"":";color:#e8456f"}`;
+    document.body.appendChild(e);
+  }
+}
 function win(){
-  $('finalT').innerHTML = `<p>${CFG.final}</p>`; show('final');
+  $('finalT').innerHTML = `<p>${CFG.final}</p>`; show('final'); showCat2();
   for (let i = 0; i < 30; i++){
     const f = document.createElement('span'); f.className = "fx"; f.textContent = ["♥","❤","🌷","🌸"][i%4];
     f.style.cssText = `left:${rnd(0,95)}%;font-size:${rnd(16,34)}px;animation-duration:${rnd(3,7)}s;animation-delay:${rnd(0,3)}s;color:#e8456f`;
