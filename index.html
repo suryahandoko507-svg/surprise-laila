@@ -61,13 +61,13 @@ h1{font-family:'Caveat',cursive;font-size:2.3rem;margin:0;color:var(--p4)}
 #eits.on{transform:none}
 .big-btn{margin-top:10px;padding:10px 22px;border:0;border-radius:99px;background:var(--p3);color:#fff;font-weight:800}
 /* MODAL */
-.modal{position:fixed;inset:0;z-index:5;background:rgba(90,31,58,.5);display:none;align-items:center;justify-content:center;padding:18px 12px}
+.modal{position:fixed;inset:0;z-index:5;background:rgba(90,31,58,.5);display:none;align-items:center;justify-content:center;padding:68px 12px 18px}
 .modal.on{display:flex}
 .sheet{width:100%;max-width:390px;max-height:100%;overflow:auto;background:var(--card);border:2px solid var(--p3);border-radius:16px;animation:pop .25s}
 @keyframes pop{from{transform:scale(.85);opacity:0}}
 .sheet .bar{position:sticky;top:0;z-index:2;background:var(--card);display:flex;justify-content:flex-end;padding:8px 10px}
-.x{width:34px;height:30px;border:2px solid var(--p3);border-radius:8px;background:var(--p1)}
-.body{padding:0 14px 16px;text-align:center}
+.x{position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);right:10px;z-index:8;width:48px;height:48px;border:2px solid #fff;border-radius:50%;background:var(--p3);color:#fff;font-size:1.3rem;box-shadow:0 3px 10px rgba(0,0,0,.3);display:none}.modal.on .x{display:block}
+.body{padding:16px 14px 16px;text-align:center}
 /* CD */
 .cd{width:190px;height:190px;margin:4px auto 12px;border-radius:50%;position:relative;border:3px solid #fff;box-shadow:0 6px 18px rgba(194,69,111,.4);overflow:hidden;animation:rot 6s linear infinite paused}
 .cd img{width:100%;height:100%;object-fit:cover}
@@ -81,7 +81,7 @@ h1{font-family:'Caveat',cursive;font-size:2.3rem;margin:0;color:var(--p4)}
 @keyframes eq{from{transform:scaleY(.2)}to{transform:scaleY(1)}}
 .prog{height:5px;background:var(--p1);border-radius:3px;margin:10px 4px;overflow:hidden}.prog u{display:block;height:100%;width:0;background:var(--p3)}
 .pl{width:60px;height:60px;border-radius:50%;border:0;background:var(--p3);color:#fff;font-size:1.5rem}
-#mini{position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);right:10px;z-index:6;width:46px;height:46px;border-radius:50%;border:2px solid #fff;padding:0;overflow:hidden;display:none;box-shadow:0 3px 10px rgba(0,0,0,.3)}
+#mini{position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);left:10px;z-index:6;width:46px;height:46px;border-radius:50%;border:2px solid #fff;padding:0;overflow:hidden;display:none;box-shadow:0 3px 10px rgba(0,0,0,.3)}
 #mini img{width:100%;height:100%;object-fit:cover;animation:rot 6s linear infinite paused}
 #mini.on img{animation-play-state:running}
 #mini b{position:absolute;inset:0;display:grid;place-items:center;color:#fff;background:rgba(0,0,0,.3);font-size:1rem}
@@ -155,7 +155,7 @@ video{width:100%;border-radius:10px;background:#000}
   <div class="paper" id="finalT"></div>
 </section>
 
-<div class="modal" id="modal"><div class="sheet"><div class="bar"><button class="x" id="mx">✕</button></div><div class="body" id="mb"></div></div></div>
+<div class="modal" id="modal"><button class="x" id="mx" aria-label="Tutup">✕</button><div class="sheet"><div class="body" id="mb"></div></div></div>
 <button id="mini" aria-label="Musik"><img id="miniImg" alt=""><b id="miniB">⏸</b></button>
 
 <script>
@@ -168,13 +168,13 @@ const CFG = {
   song: { src: "lagu.mp3", title: "Masa Ini, Nanti, dan Masa Indah Lainnya", artist: "Nuca", cover: "cover.png" },
   card: [
     "alloooo saaaayaangggg, Selamat bertambah usia sayangku, cintaa ku, cantikk ku, dan duniaa kuu.",
-    "waduhh sudah 23 tahun sajaa kamunya, tapi kamunya masih kecil hehe, semangatt teruss yaa sayangkuu, semogaa kedepanya urusan kamuu selalu di permudahh, apaa yangg kamuu inginin semogaa terwujudd selaluu, tetapp selaluu jadi lailaa yangg banyak orang kenal, tetep jadii lailaa yang baikk hatii imutt, rajin manabung, tidak sombongg, dann tidakk suka melawann orang tuaa.",
+    "waduhh kamu sudah 23 tahun sajaa tapi kamu nya masih kecil hehe, semangatt teruss yaa sayangkuu, semogaa kedepanya urusan kamuu selalu di permudahh, apaa yangg kamuu inginin semogaa terwujudd selaluu, tetapp selaluu jadi lailaa yangg banyak orang kenal, tetep jadii lailaa yang baikk hatii imutt, rajin manabung, tidak sombongg, dann tidakk suka melawann orang tuaa.",
     "oiyaaa semoggaaa impiann kamuuu semuanyaa terwujudd dann abgg bakal selaluu support kamuu teruss kapann punn dimanaa punn sayangg.",
     "sekali lagii happy birthday yaa sayanggggkuuu i wish u the bestt sayangg, I LOVE YOUU ❤️"
   ],
   photos: [1,2,3,4,5,6,7,8].map(n => ({ src: "foto" + n + ".jpg", cap: "" })),
   video: { src: "video1.mp4", title: "taraa selamat ulang tahun" },
-  puzzle: "puzzle.jpg",
+  puzzle: "puzzle.png",
   eits: "kitaa ada mini games nihh, selesai in dulu yuk.",
   final: "wahh kamu berhasil gimanaa bahagiaa tidak hari ini? semogaa bahagiaia yaa di hari kamu bertambah usiaa ini sayangg, i love youu sayangkuu terimakasih atas waktunya sekian dan terimakasih"
 };
@@ -252,7 +252,7 @@ $('big').onclick = e => {
   }, 110);
 };
 $('goOn').onclick = () => {
-  cancelAnimationFrame(raf); hbd.pause();
+  cancelAnimationFrame(raf);
   $('bg').classList.add('on'); show('lock');
 };
 
@@ -266,7 +266,7 @@ function press(k){
   if (k === "del") typed = typed.slice(0,-1); else if (typed.length < L) typed += k;
   dot();
   if (typed.length === L) setTimeout(() => {
-    if (typed === CFG.pin) show('gifts');
+    if (typed === CFG.pin) { hbd.pause(); show('gifts'); }
     else { $('msg').textContent = "Sandinya belum pas, coba lagi ya"; $('dots').classList.add('shake'); setTimeout(() => $('dots').classList.remove('shake'), 400); typed = ""; dot(); }
   }, 150);
 }
